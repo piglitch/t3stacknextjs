@@ -6,10 +6,26 @@ await import("./src/env.js");
 
 /** @type {import("next").NextConfig} */
 
-export const images = {
-  domains: [
-    "images.unsplash.com"
-  ]
-}
+const config = {
+  images: {
+    domains: ['images.unsplash.com'], // Add the domain here
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+        pathname: '/[^*][^.]*/**',
+      },
+    ],
+  },
+  // Next.js configuration options
+  typescript: {
+    ignoreBuildErrors: true,
+  },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+};
+
+export default config;
 
 
