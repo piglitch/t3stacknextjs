@@ -4,6 +4,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { db } from "~/server/db";
 import { v4 as uuidv4 } from 'uuid';
+
+export const dynamic = "force-dynamic";
+
 const mockUrls = [
   "https://images.unsplash.com/photo-1543424165-dc50e710c481?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8bXVzY2xlJTIwY2Fyc3xlbnwwfHwwfHx8MA%3D%3D",
   "https://images.unsplash.com/photo-1623550995311-252fe7df3817?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8bXVzY2xlJTIwY2Fyc3xlbnwwfHwwfHx8MA%3D%3D",
