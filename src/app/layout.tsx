@@ -1,6 +1,9 @@
 import "~/styles/globals.css";
 
 import { Inter } from "next/font/google";
+import { signIn } from "next-auth/react";
+import SignInPage from "./_components/SignInPage";
+
 
 const inter = Inter({
   subsets: ["latin"],
@@ -17,7 +20,7 @@ function TopNav() {
   return(
     <nav className="flex w-full border-b items-center justify-between p-4 text-2xl font-semibold">
       <div>Navbar</div>
-      <div>Sign In</div>
+      <SignInPage />
     </nav>
   )
 }
