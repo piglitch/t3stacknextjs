@@ -1,13 +1,11 @@
 
 import { signIn } from 'next-auth/react';
 import React from 'react'
-import { options } from '../api/auth/[...nextauth]/options';
-import { getServerSession } from 'next-auth/next';
-
-
+// import { getServerSession } from 'next-auth/next';
+import { auth } from '../../auth';
 
 async function SignInPage() {
-  const session = await getServerSession(options)
+  const session = await auth();
   console.log(session);
   return (
     <div>
