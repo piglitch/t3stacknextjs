@@ -1,16 +1,6 @@
-// Example model schema from the Drizzle docs
-// https://orm.drizzle.team/docs/sql-schema-declaration
-
-import { sql } from "drizzle-orm";
 import {
-  boolean,
-  index,
-  pgTableCreator,
-  serial,
   timestamp,
-  varchar,
-} from "drizzle-orm/pg-core";
-import {
+  pgTable,
   text,
   primaryKey,
   integer,
@@ -23,10 +13,8 @@ const connectionString = "postgres://postgres:postgres@localhost:5432/drizzle"
 const pool = postgres(connectionString, { max: 1 })
  
 export const db = drizzle(pool)
-
-export const createTable = pgTableCreator((name) => `t3stacknextjs_${name}`);
-
-export const users = createTable("users", {
+ 
+export const users = pgTable("user", {
   id: text("id")
     .primaryKey()
     .$defaultFn(() => crypto.randomUUID()),
@@ -34,10 +22,9 @@ export const users = createTable("users", {
   email: text("email").notNull(),
   emailVerified: timestamp("emailVerified", { mode: "date" }),
   image: text("image"),
-  isAdmin: boolean('admin')
 })
  
-export const accounts = createTable(
+export const accounts = pgTable(
   "account",
   {
     userId: text("userId")
@@ -61,7 +48,7 @@ export const accounts = createTable(
   })
 )
  
-export const sessions = createTable("session", {
+export const sessions = pgTable("session", {
   sessionToken: text("sessionToken").primaryKey(),
   userId: text("userId")
     .notNull()
@@ -69,7 +56,7 @@ export const sessions = createTable("session", {
   expires: timestamp("expires", { mode: "date" }).notNull(),
 })
  
-export const verificationTokens = createTable(
+export const verificationTokens = pgTable(
   "verificationToken",
   {
     identifier: text("identifier").notNull(),
@@ -80,25 +67,19 @@ export const verificationTokens = createTable(
     compoundKey: primaryKey({ columns: [vt.identifier, vt.token] }),
   })
 )
+
 /**
  * This is an example of how to use the multi-project schema feature of Drizzle ORM. Use the same
  * database instance for multiple projects.
  *
  * @see https://orm.drizzle.team/docs/goodies#multi-project-schema
  */
-export const posts = createTable(
+export const posts = pgTable(
   "image",
   {
-    id: serial("id").primaryKey(),
-    name: varchar("name", { length: 256 }).notNull(),
-    url: varchar('url', { length: 1024 }).notNull(),
-    createdAt: timestamp("created_at")
-      .default(sql`CURRENT_TIMESTAMP`)
-      .notNull(),
-    updatedAt: timestamp("updatedAt"),
+    id: text("id").notNull(),
+    name: text("name").notNull(),
+    url: text('url').notNull(),
   },
-  (example) => ({
-    nameIndex: index("name_idx").on(example.name),
-  })
 );
 
