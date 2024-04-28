@@ -4,7 +4,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { db } from "~/server/db";
 import { DrizzleAdapter } from "@auth/drizzle-adapter";
 
-export const {handlers, auth} = NextAuth({
+export const {handlers, auth, signOut} = NextAuth({
   // Configure providers here
   providers: [
     GithubProvider({

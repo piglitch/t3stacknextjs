@@ -11,7 +11,7 @@ export default async function HomePage() {
   const images = await db.query.posts.findMany({
     orderBy: (model, {desc}) => desc(model.id)
   });
-
+  const users = await db.query.users.findMany();
   return (
     <main>
       <div className="flex flex-wrap gap-4 ml-6">
@@ -20,6 +20,9 @@ export default async function HomePage() {
             <div key={uuidv4()} className="flex flex-col w-48">
               <Image src={image.url} alt="carslol" width={480} height={80}/>
               <div>{image.name}</div>
+              <div>Uploader: {users.map(
+                user => user.id === image.userId? user.name : ""
+              )}</div>
             </div>
           ))
         }

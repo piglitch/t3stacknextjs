@@ -8,6 +8,7 @@ import {
 import postgres from "postgres"
 import { drizzle } from "drizzle-orm/postgres-js"
 import type { AdapterAccount } from "next-auth/adapters"
+
  
 const connectionString = "postgres://postgres:postgres@localhost:5432/drizzle"
 const pool = postgres(connectionString, { max: 1 })
@@ -18,7 +19,7 @@ export const users = pgTable("user", {
   id: text("id")
     .primaryKey()
     .$defaultFn(() => crypto.randomUUID()),
-  name: text("name"),
+  name: text("name").notNull(),
   email: text("email").notNull(),
   emailVerified: timestamp("emailVerified", { mode: "date" }),
   image: text("image"),
@@ -75,11 +76,15 @@ export const verificationTokens = pgTable(
  * @see https://orm.drizzle.team/docs/goodies#multi-project-schema
  */
 export const posts = pgTable(
-  "image",
-  {
-    id: text("id").notNull(),
+  "posts",
+  {    
+    id: text("id").primaryKey(),
+    userId: text("userId")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
     name: text("name").notNull(),
     url: text('url').notNull(),
   },
 );
+
 
