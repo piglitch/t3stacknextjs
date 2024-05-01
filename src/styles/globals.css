@@ -4,6 +4,10 @@
 
 body{
   @apply bg-slate-900 text-white;
-  margin: 0;
-  padding: 0;
+  @apply px-14;
+}
+
+button:hover{
+  transition: .3s;
+  scale: .90;
 }
