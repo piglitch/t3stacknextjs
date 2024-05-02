@@ -24,7 +24,6 @@ function TopNav() {
   return (
     <nav className="flex w-full border-b items-center justify-between p-4 text-2xl font-semibold">
       <a href="/">Bloggy</a>
-      <a href="/my_posts">My Posts</a>
       <SignInPage />
     </nav>
   )
@@ -35,9 +34,15 @@ async function TaskBar() {
   return (
     <div className="w-full px-4">
       {
-        session?.user ? <button className="bg-green-500 bg-opacity-35 w-max p-2 rounded-lg">
-          <a href="/create-post">Create a post</a>
-        </button>
+        session?.user ? 
+        <div className="flex gap-4">
+          <button className="bg-green-500 bg-opacity-35 w-max p-2 rounded-lg">
+            <a href="/create-post">Create a post</a>
+          </button>
+          <button className="bg-blue-400 bg-opacity-35 w-max p-2 rounded-lg">
+            <a href="/my-posts">My Posts</a>
+          </button>
+        </div>
         : <div className="bg-red-700 bg-opacity-55 w-max p-2 rounded-lg">Sign in to create a post</div>
       }
     </div>

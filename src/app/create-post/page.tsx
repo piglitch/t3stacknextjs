@@ -1,17 +1,20 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 'use client'
 
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { Editor } from '@tinymce/tinymce-react';
 import { type Editor as TinyMCEEditor } from 'tinymce';
 import { useRouter } from 'next/navigation';
+import { createPost } from '../lib/actions';
 
 export default function Page() {
   const editorRef = useRef<TinyMCEEditor | null>(null);
   const router = useRouter();
-
-  const log = () => {
+  const [isClicked, setIsClicked] = useState(false)
+  const log = async() => {
     if (editorRef.current) {
+      const newPost = await createPost();
+      router.push('/my-posts')
       console.log(editorRef.current.getContent());
     }
   };
@@ -56,8 +59,8 @@ export default function Page() {
         }}
       />
       <div className='flex justify-between gap-10 px-4'>
-        <button className='rounded-lg mt-5 p-2 bg-green-500' onClick={log}>POST</button>
-        <button className='rounded-lg mt-5 p-2 bg-red-600' onClick={() => router.push("/my_posts")}>DISCARD</button>
+      <button className='rounded-lg mt-5 p-2 w-24 bg-red-600' onClick={() => router.push("/my-posts")}>DISCARD</button>
+        <button className='rounded-lg mt-5 w-24 p-2 bg-green-500' onClick={log}>POST</button>  
       </div>      
     </div>
   )
