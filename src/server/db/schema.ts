@@ -78,12 +78,12 @@ export const verificationTokens = pgTable(
 export const posts = pgTable(
   "posts",
   {    
-    id: text("id").primaryKey(),
+    id: text("id").primaryKey().$defaultFn(() => crypto.randomUUID()),
     userId: text("userId")
       .notNull()
       .references(() => users.id, { onDelete: "cascade" }),
-    name: text("name").notNull(),
-    url: text('url').notNull(),
+    title: text("title").notNull(),
+    htmlContent: text("htmlContent").notNull()
   },
 );
 

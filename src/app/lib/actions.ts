@@ -1,23 +1,43 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 'use server'
 
 import { auth } from '~/auth';
 import { db } from '~/server/db';
 import { posts } from '~/server/db/schema';
 import { v4 as uuidv4 } from 'uuid';
+import { eq } from 'drizzle-orm';
 
 const session = await auth()
 const userId = session?.user?.id ?? '';
 
-export async function createPost() {
+// export async function getAllPostsFromUser(allposts) {
+//   const user = session?.user;
+//   const posts = await db.query.posts.findMany({
+//     where: (posts, {eq}) => (user?.id ? eq(posts?.userId, user.id) : undefined),
+//   });
+//   allposts = posts;
+// }
+
+export async function createPost(post: any, title: string) {
   if (!session?.user?.id) {
     throw new Error("Unauthorized");
   }
   const newPost = {
     id: uuidv4(),
     userId: userId,
-    name: 'new car image',
-    url: 'https://images.unsplash.com/photo-1714224806668-9d8dc105f71e?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHx0b3BpYy1mZWVkfDZ8Ym84alFLVGFFMFl8fGVufDB8fHx8fA%3D%3D',
+    title: title,
+    htmlContent: post,
   };
   await db.insert(posts).values(newPost);
 }
+
+export async function deletePost(post: any) {
+  if (!session?.user) {
+    throw new Error('Unauthorized')
+  }
+  await db.delete(posts).where(eq(posts.id, post.id))
+}
+
+
 
