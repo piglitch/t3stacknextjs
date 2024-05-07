@@ -32,7 +32,7 @@ export async function createPost(post: any, title: string) {
   await db.insert(posts).values(newPost);
 }
 
-export async function deletePost(post: any) {
+export async function deletePostFromUser(post: any) {
   if (!session?.user) {
     throw new Error('Unauthorized')
   }
