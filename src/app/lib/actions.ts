@@ -7,11 +7,11 @@ import { db } from '~/server/db';
 import { posts } from '~/server/db/schema';
 import { v4 as uuidv4 } from 'uuid';
 import { eq } from 'drizzle-orm';
-
-const session = await auth()
-const userId = session?.user?.id ?? '';
+  
 
 export async function createPost(post: any, title: string) {
+  const session = await auth()
+  const userId = session?.user?.id ?? '';
   if (!session?.user?.id) {
     throw new Error("Unauthorized");
   }
@@ -25,6 +25,8 @@ export async function createPost(post: any, title: string) {
 }
 
 export async function deletePostFromUser(post: any) {
+  const session = await auth()
+  const userId = session?.user?.id ?? '';
   if (!session?.user) {
     throw new Error('Unauthorized')
   }
