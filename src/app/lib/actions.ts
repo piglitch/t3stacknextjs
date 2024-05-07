@@ -11,14 +11,6 @@ import { eq } from 'drizzle-orm';
 const session = await auth()
 const userId = session?.user?.id ?? '';
 
-// export async function getAllPostsFromUser(allposts) {
-//   const user = session?.user;
-//   const posts = await db.query.posts.findMany({
-//     where: (posts, {eq}) => (user?.id ? eq(posts?.userId, user.id) : undefined),
-//   });
-//   allposts = posts;
-// }
-
 export async function createPost(post: any, title: string) {
   if (!session?.user?.id) {
     throw new Error("Unauthorized");
