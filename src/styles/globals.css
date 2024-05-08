@@ -13,14 +13,14 @@ button:hover{
 }
 
 .each-post{
-  @apply mt-10 mb-10 rounded-lg;
+  @apply mt-10 rounded-lg;
   border: 1px skyblue solid;
   display: flex;
   flex-wrap: wrap;
 }
 
 .heading-post{
-  @apply bg-orange-500 font-bold h-max rounded-t-lg p-2 flex text-2xl justify-between; 
+  @apply bg-orange-500 font-bold h-max rounded-t-lg p-2 flex text-2xl justify-between gap-4; 
 }
 .body-post{
   @apply p-4 min-h-80;

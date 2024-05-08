@@ -41,6 +41,12 @@ async function TaskBar({session}) {
           <button className="bg-blue-400 bg-opacity-35 w-max p-2 rounded-lg">
             <a href="/my-posts">My Posts</a>
           </button>
+          <button className="bg-pink-500 bg-opacity-35 w-max p-2 rounded-lg">
+            <a href="/liked-posts">Liked Posts</a>
+          </button>
+          <button className="bg-sky-300 bg-opacity-35 w-max p-2 rounded-lg">
+            <a href="/saved-posts">Saved Posts</a>
+          </button>
         </div>
         : <div className="bg-red-700 bg-opacity-55 w-max p-2 rounded-lg">Sign in to create a post</div>
       }

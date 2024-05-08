@@ -1,39 +1,28 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-import Image from "next/image";
-import Link from "next/link";
+
 import { db } from "~/server/db";
-import { v4 as uuidv4 } from 'uuid';
-import ReactHtmlParse from 'html-react-parser';
+import HomePage from "./_components/homePage";
+import { auth } from "~/auth";
+
 
 export const dynamic = "force-dynamic";
 
-export default async function HomePage() {
+export default async function Home() {
+  const session = await auth();
+  const user = session?.user;
   const allposts = await db.query.posts.findMany({
     orderBy: (model, {desc}) => desc(model?.id)
   });
   const users = await db.query.users.findMany();
+  const allLikedPosts = await db.query.likes.findMany({
+    where: (allLikedPosts, {eq}) => (user?.id ? eq(allLikedPosts?.userId, user.id) : undefined)
+  });
+
   return (
     <main>
-      <div className="max-w-5xl min-w-96 mx-auto">
-        {
-          allposts.map((post) => (
-            <div key={uuidv4()} className="each-post">
-              <div className="w-full">
-                <h1 className="heading-post">
-                  <div>{post.title}</div>
-                  <div className="text-sm font-bold text-teal-50"> 
-                    Uploaded by/ 
-                    <span className="text-yellow-200"> {users.map(
-                    user => user.id === post.userId? user.name : ""
-                    )}</span>
-                  </div>  
-                </h1>
-                <div className="body-post">{ReactHtmlParse(post.htmlContent)}</div>
-              </div>              
-            </div>
-          ))
-        }
+      <div className="w-max lg:w-2/3 mx-auto">
+        <HomePage allposts={allposts} users={users} user={user} allLikedPosts={allLikedPosts}/>
       </div>
     </main>
   );

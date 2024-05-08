@@ -12,7 +12,7 @@ const Page = async() => {
   });
   
   return (
-    <div className='max-w-5xl min-w-96 mx-auto'>
+    <div className='w-96 lg:w-2/3 mx-auto'>
       {
         session?.user ? (
           <MyPosts posts={posts} />

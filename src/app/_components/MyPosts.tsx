@@ -6,36 +6,46 @@
 import React from 'react'
 import { v4 as uuidv4 } from 'uuid';
 import ReactHtmlParse from 'html-react-parser';
-import { deletePostFromUser } from '../lib/actions';
+import { deletePostFromUser, likePost } from '../lib/actions';
 import { useRouter } from 'next/navigation';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import TurnedInNotIcon from '@mui/icons-material/TurnedInNot';
 
 export const dynamic = 'force-dynamic';
 
 const MyPosts = ({posts}) => {
   const router = useRouter()
-  const editPost = () => {
-    console.log('edited');
+  const handle_likes = async(post) => {
+    const like_Post = await likePost(post);
+    console.log('lol');
   }
-  const handle_delete = async(post) =>{
+  const handle_delete = async(post) => {
    const deletePost = await deletePostFromUser(post); 
    console.log('deleted: ', post.id);
     // router.push("/my-posts");
     router.refresh()
   }
   return (
-    <div>
+  <div className='w-96 lg:w-full mx-auto'>
     {
-      posts ? posts.map(post => (
-        <div key={uuidv4()} className='each-post'>
-          <div className='w-full'>
-            <h1 className='heading-post flex'><span>{post.title}</span>
-              <div className='text-sm my-auto'>
-                <div className='cursor-pointer hover:text-red-600 h-max' onClick={() => handle_delete(post)}>Delete</div>
-              </div>
-            </h1>
-            <div className='body-post'>{ReactHtmlParse(post.htmlContent)}</div>
+      posts.length > 0 ? posts.map(post => (
+        <div key={uuidv4()} className='mb-10'>
+          <div className='each-post mb-2'>
+            <div className='w-full'>
+              <h1 className='heading-post flex'><span>{post.title}</span>
+                <div className='text-sm my-auto'>
+                  <div className='cursor-pointer hover:text-red-600 h-max' onClick={() => handle_delete(post)}>Delete</div>
+                </div>
+              </h1>
+              <div className='body-post'>{ReactHtmlParse(post.htmlContent)}</div>
+            </div>
           </div>
-        </div>
+          <div className='flex px-2 gap-4 w-full'>
+            <button onClick={() => handle_likes(post)}><FavoriteBorderIcon /></button>
+            <TurnedInNotIcon />
+            <div className='ml-auto text-xs font-thin italic'>~{post.createdAt.toString().slice(0, 15)}</div>
+          </div> 
+        </div>        
       )) : "No posts yet."
     }
   </div>

@@ -4,10 +4,12 @@ import {
   text,
   primaryKey,
   integer,
+  date,
 } from "drizzle-orm/pg-core"
 import postgres from "postgres"
 import { drizzle } from "drizzle-orm/postgres-js"
 import type { AdapterAccount } from "next-auth/adapters"
+import { sql } from "drizzle-orm"
 
  
 const connectionString = "postgres://postgres:postgres@localhost:5432/drizzle"
@@ -83,8 +85,24 @@ export const posts = pgTable(
       .notNull()
       .references(() => users.id, { onDelete: "cascade" }),
     title: text("title").notNull(),
-    htmlContent: text("htmlContent").notNull()
+    htmlContent: text("htmlContent").notNull(),
+    createdAt: timestamp("created_at")
+      .default(sql`CURRENT_TIMESTAMP`)
+      .notNull(),
+    updatedAt: timestamp("updatedAt")
   },
 );
 
+export const likes = pgTable(
+  "likes",
+  {
+    id: text("id").primaryKey().$defaultFn(() => crypto.randomUUID()),
+    userId: text("userId")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    postId: text("postId")
+      .notNull()
+      .references(() => posts.id, { onDelete: "cascade" }),  
+  }
+);
 

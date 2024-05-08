@@ -4,7 +4,7 @@
 
 import { auth } from '~/auth';
 import { db } from '~/server/db';
-import { posts } from '~/server/db/schema';
+import { likes, posts } from '~/server/db/schema';
 import { v4 as uuidv4 } from 'uuid';
 import { eq } from 'drizzle-orm';
   
@@ -19,14 +19,27 @@ export async function createPost(post: any, title: string) {
     id: uuidv4(),
     userId: userId,
     title: title,
-    htmlContent: post,
+    htmlContent: post,    
   };
   await db.insert(posts).values(newPost);
 }
 
-export async function deletePostFromUser(post: any) {
+export async function likePost(post: any) {
   const session = await auth()
   const userId = session?.user?.id ?? '';
+  if (!session?.user?.id) {
+    throw new Error("Unauthorized");
+  }
+  const newPost = {
+    id: uuidv4(),
+    postId: post.id,   
+    userId: userId,
+  };
+  await db.insert(likes).values(newPost);
+}
+
+export async function deletePostFromUser(post: any) {
+  const session = await auth()
   if (!session?.user) {
     throw new Error('Unauthorized')
   }
