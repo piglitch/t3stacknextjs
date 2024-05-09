@@ -1,10 +1,58 @@
+/* eslint-disable @typescript-eslint/prefer-for-of */
 import React from 'react'
+import { auth } from '~/auth';
+import { db } from '~/server/db';
+import { v4 as uuidv4 } from 'uuid';
+import useState from 'react';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import TurnedInNotIcon from '@mui/icons-material/TurnedInNot';
+import ReactHtmlParse from 'html-react-parser';
 
-type Props = {}
+const page = async() => {
+  let allposts = [];;
+  let a = 0;
+  const session = auth()
+  const user = session?.user;
+  const allLikedPosts = await db.query.likes.findMany({
+    where: (allLikedPosts, {eq}) => (user?.id ? eq(allLikedPosts?.userId, user.id) : undefined)
+  });
 
-const page = (props: Props) => {
+  for (let index = 0; index < allLikedPosts.length; index++) {
+    const postid = allLikedPosts[index]?.postId;
+    allposts = await db.query.posts.findMany({
+      orderBy: (model, {desc}) => desc(model?.createdAt),
+      where: (allposts, {eq}) => (allposts?.id ? eq(allposts?.id, postid) : undefined)
+    });
+    a = a + 1
+    console.log('xcxfadfd', allposts);
+  }
+
+
   return (
-    <div>page</div>
+    <div>
+      {
+        allposts.map((post) => (
+          <div key={uuidv4()} className='mb-10'>
+            <div className="each-post mb-1">
+              <div className="w-full">
+                <h1 className="heading-post">
+                  <div>{post.title}</div>
+                </h1>
+                <div className="body-post">{ReactHtmlParse(post.htmlContent)}</div>
+              </div>              
+            </div>
+            <div className='flex px-2 gap-4 w-full'>
+              {/* <button onClick={() => handle_likes(post)}>
+                <FavoriteBorderIcon id={post?.id} key={uuidv4()}
+                className={allLikedPosts?.some(x => x.postId === post?.id) ? 'text-red-600' : "text-white"} />
+              </button> */}
+              <TurnedInNotIcon />
+              <div className='ml-auto text-xs font-thin italic'>~{post.createdAt.toString().slice(0, 15)}</div>
+            </div> 
+          </div>            
+        ))
+      }      
+    </div>
   )
 }
 

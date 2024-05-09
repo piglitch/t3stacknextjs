@@ -12,7 +12,7 @@ export default async function Home() {
   const session = await auth();
   const user = session?.user;
   const allposts = await db.query.posts.findMany({
-    orderBy: (model, {desc}) => desc(model?.id)
+    orderBy: (model, {desc}) => desc(model?.createdAt)
   });
   const users = await db.query.users.findMany();
   const allLikedPosts = await db.query.likes.findMany({
@@ -22,7 +22,7 @@ export default async function Home() {
   return (
     <main>
       <div className="w-max lg:w-2/3 mx-auto">
-        <HomePage allposts={allposts} users={users} user={user} allLikedPosts={allLikedPosts}/>
+        <HomePage allposts={allposts} users={users} allLikedPosts={allLikedPosts}/>
       </div>
     </main>
   );

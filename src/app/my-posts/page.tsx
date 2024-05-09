@@ -8,6 +8,7 @@ const Page = async() => {
   console.log("route1", session);
   const user = session?.user;
   const posts = await db.query.posts.findMany({
+    orderBy: (model, {desc}) => desc(model?.createdAt),
     where: (posts, {eq}) => (user?.id ? eq(posts?.userId, user.id) : undefined),
   });
   

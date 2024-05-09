@@ -1,25 +1,33 @@
 /* eslint-disable @next/next/no-img-element */
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
-/* eslint-disable @typescript-eslint/no-unsafe-return */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 'use client'
 
-
-import React, { useRef } from 'react'
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import TurnedInNotIcon from '@mui/icons-material/TurnedInNot';
 import ReactHtmlParse from 'html-react-parser';
 import { v4 as uuidv4 } from 'uuid';
-import { likePost } from '../lib/actions';
-import { uuid } from 'drizzle-orm/pg-core';
+import { likePost, unlikePost } from '../lib/actions';
+import { type User, type Post, type Like } from '~/types';
 
-const HomePage = ({allposts, users, user, allLikedPosts}) => {
-  const like_button = useRef(null);
-  const handle_likes = async(post) => {
-    //like_button.current.style.color === 'red' ? 'white' : 'red';
-    const like_Post = await likePost(post);
-    console.log(post.id, allLikedPosts, allposts);
+interface Props {
+  allposts: Post[];
+  users: User[];
+  allLikedPosts?: Like[];
+}
+
+const HomePage: React.FC<Props> = ({allposts, users, allLikedPosts}) => {
+  const handle_likes = async(post: Post) => {
+    const currLikeButton = document.getElementById(post.id);
+    if (currLikeButton === null) {
+      return '404';
+    }
+    if (currLikeButton.style.color === 'white') {
+      currLikeButton.style.color = 'red';
+      await likePost(post);
+      return 'unliked';
+    } else{
+      currLikeButton.style.color = 'white';
+      await unlikePost(post);
+    }
   }
   return (
     <div>
@@ -43,9 +51,9 @@ const HomePage = ({allposts, users, user, allLikedPosts}) => {
               </div>              
             </div>
             <div className='flex px-2 gap-4 w-full'>
-              <button ref={like_button} onClick={() => handle_likes(post)}>
-                <FavoriteBorderIcon 
-                className={allLikedPosts.some(x => x.postId === post?.id) ? 'text-red-600' : "text-white"} />
+              <button onClick={() => handle_likes(post)}>
+                <FavoriteBorderIcon id={post?.id} key={uuidv4()}
+                className={allLikedPosts?.some(x => x.postId === post?.id) ? 'text-red-600' : "text-white"} />
               </button>
               <TurnedInNotIcon />
               <div className='ml-auto text-xs font-thin italic'>~{post.createdAt.toString().slice(0, 15)}</div>

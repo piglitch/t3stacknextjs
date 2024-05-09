@@ -16,11 +16,11 @@ export const dynamic = 'force-dynamic';
 const MyPosts = ({posts}) => {
   const router = useRouter()
   const handle_likes = async(post) => {
-    const like_Post = await likePost(post);
+    await likePost(post);
     console.log('lol');
   }
   const handle_delete = async(post) => {
-   const deletePost = await deletePostFromUser(post); 
+   await deletePostFromUser(post); 
    console.log('deleted: ', post.id);
     // router.push("/my-posts");
     router.refresh()

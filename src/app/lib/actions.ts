@@ -7,9 +7,10 @@ import { db } from '~/server/db';
 import { likes, posts } from '~/server/db/schema';
 import { v4 as uuidv4 } from 'uuid';
 import { eq } from 'drizzle-orm';
-  
+import { type User, type Post, type Like } from '~/types';
 
-export async function createPost(post: any, title: string) {
+
+export async function createPost(post: string, title: string) {
   const session = await auth()
   const userId = session?.user?.id ?? '';
   if (!session?.user?.id) {
@@ -24,7 +25,7 @@ export async function createPost(post: any, title: string) {
   await db.insert(posts).values(newPost);
 }
 
-export async function likePost(post: any) {
+export async function likePost(post: Post) {
   const session = await auth()
   const userId = session?.user?.id ?? '';
   if (!session?.user?.id) {
@@ -38,7 +39,15 @@ export async function likePost(post: any) {
   await db.insert(likes).values(newPost);
 }
 
-export async function deletePostFromUser(post: any) {
+export async function unlikePost(post: Post) {
+  const session = await auth()
+  if (!session?.user?.id) {
+    throw new Error("Unauthorized");
+  }
+  await db.delete(likes).where(eq(likes.postId, post.id));
+}
+
+export async function deletePostFromUser(post: Post) {
   const session = await auth()
   if (!session?.user) {
     throw new Error('Unauthorized')
