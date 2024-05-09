@@ -7,6 +7,7 @@ import ReactHtmlParse from 'html-react-parser';
 import { v4 as uuidv4 } from 'uuid';
 import { likePost, unlikePost } from '../lib/actions';
 import { type User, type Post, type Like } from '~/types';
+import { useSession } from 'next-auth/react';
 
 interface Props {
   allposts: Post[];
@@ -15,6 +16,7 @@ interface Props {
 }
 
 const HomePage: React.FC<Props> = ({allposts, users, allLikedPosts}) => {
+  const session = useSession();  
   const handle_likes = async(post: Post) => {
     const currLikeButton = document.getElementById(post.id);
     if (currLikeButton === null) {
@@ -50,14 +52,16 @@ const HomePage: React.FC<Props> = ({allposts, users, allLikedPosts}) => {
                 <div className="body-post">{ReactHtmlParse(post.htmlContent)}</div>
               </div>              
             </div>
-            <div className='flex px-2 gap-4 w-full'>
+            { session.status === 'authenticated' ? 
+              <div className='flex px-2 gap-4 w-full'>
               <button onClick={() => handle_likes(post)}>
                 <FavoriteBorderIcon id={post?.id} key={uuidv4()}
                 className={allLikedPosts?.some(x => x.postId === post?.id) ? 'text-red-600' : "text-white"} />
               </button>
               <TurnedInNotIcon />
               <div className='ml-auto text-xs font-thin italic'>~{post.createdAt.toString().slice(0, 15)}</div>
-            </div> 
+            </div> : ''
+            }
           </div>            
         ))
       }      
