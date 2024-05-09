@@ -8,8 +8,8 @@ export const {handlers, auth, signOut} = NextAuth({
   // Configure providers here
   providers: [
     GithubProvider({
-      clientId: process.env.GITHUB_ID!, 
-      clientSecret: process.env.GITHUB_SECRET!
+      clientId: process.env.GH_ID!, 
+      clientSecret: process.env.GH_SECRET!
     }),
 ],
   adapter: DrizzleAdapter(db),
