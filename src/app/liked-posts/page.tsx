@@ -5,7 +5,6 @@ import { db } from '~/server/db';
 import { v4 as uuidv4 } from 'uuid';
 import useState from 'react';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import TurnedInNotIcon from '@mui/icons-material/TurnedInNot';
 import ReactHtmlParse from 'html-react-parser';
 
 const page = async() => {
@@ -46,7 +45,6 @@ const page = async() => {
                 <FavoriteBorderIcon id={post?.id} key={uuidv4()}
                 className={allLikedPosts?.some(x => x.postId === post?.id) ? 'text-red-600' : "text-white"} />
               </button> */}
-              <TurnedInNotIcon />
               <div className='ml-auto text-xs font-thin italic'>~{post.createdAt.toString().slice(0, 15)}</div>
             </div> 
           </div>            

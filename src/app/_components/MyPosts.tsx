@@ -9,7 +9,6 @@ import ReactHtmlParse from 'html-react-parser';
 import { deletePostFromUser, likePost } from '../lib/actions';
 import { useRouter } from 'next/navigation';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import TurnedInNotIcon from '@mui/icons-material/TurnedInNot';
 
 export const dynamic = 'force-dynamic';
 
@@ -42,7 +41,6 @@ const MyPosts = ({posts}) => {
           </div>
           <div className='flex px-2 gap-4 w-full'>
             <button onClick={() => handle_likes(post)}><FavoriteBorderIcon /></button>
-            <TurnedInNotIcon />
             <div className='ml-auto text-xs font-thin italic'>~{post.createdAt.toString().slice(0, 15)}</div>
           </div> 
         </div>        

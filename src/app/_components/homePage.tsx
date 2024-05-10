@@ -2,7 +2,6 @@
 'use client'
 
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import TurnedInNotIcon from '@mui/icons-material/TurnedInNot';
 import ReactHtmlParse from 'html-react-parser';
 import { v4 as uuidv4 } from 'uuid';
 import { likePost, unlikePost } from '../lib/actions';
@@ -58,7 +57,6 @@ const HomePage: React.FC<Props> = ({allposts, users, allLikedPosts}) => {
                 <FavoriteBorderIcon id={post?.id} key={uuidv4()}
                 className={allLikedPosts?.some(x => x.postId === post?.id) ? 'text-red-600' : "text-white"} />
               </button>
-              <TurnedInNotIcon />
               <div className='ml-auto text-xs font-thin italic'>~{post.createdAt.toString().slice(0, 15)}</div>
             </div> : ''
             }
