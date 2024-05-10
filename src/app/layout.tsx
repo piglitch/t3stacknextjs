@@ -23,7 +23,10 @@ export const metadata = {
 function TopNav() {
   return (
     <nav className="flex w-full border-b items-center justify-between p-4 text-2xl font-semibold">
-      <a href="/">Bloggy</a>
+      <div className="flex gap-4">
+        <a href="/">Bloggy | </a>
+        <a href="/about"><span className="text-lg">About</span></a>
+      </div>
       <SignInPage />
     </nav>
   )
