@@ -4,7 +4,7 @@
 
 body{
   @apply bg-slate-900 text-white;
-  @apply px-14;
+  @apply px-2 lg:px-14;
 }
 
 button:hover{
