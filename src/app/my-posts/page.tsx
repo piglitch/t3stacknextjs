@@ -13,7 +13,7 @@ const Page = async() => {
   });
   
   return (
-    <div className='w-96 lg:w-2/3 mx-auto'>
+    <div className='w-80 md:w-2/3 mx-auto'>
       {
         session?.user ? (
           <MyPosts posts={posts} />

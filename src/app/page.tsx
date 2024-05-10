@@ -21,7 +21,7 @@ export default async function Home() {
 
   return (
     <main>
-      <div className="w-max lg:w-2/3 mx-auto">
+      <div className="w-80 md:w-2/3 mx-auto">
         <HomePage allposts={allposts} users={users} allLikedPosts={allLikedPosts}/>
       </div>
     </main>
