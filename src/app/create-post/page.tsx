@@ -46,7 +46,7 @@ export default function Page() {
       value={title} onChange={e => setTitle(e.target.value)}/>
       <div className='mt-8'>
         <Editor
-          apiKey={process.env.NEXT_PUBLIC_TINY_URL}
+          apiKey="rgklgiewxbmxwyminbpvkh6unnvnx87k9h0ixi8mxn6p2ywk"
           onInit={(_evt, editor) => editorRef.current = editor}
           initialValue=""
           init={{
