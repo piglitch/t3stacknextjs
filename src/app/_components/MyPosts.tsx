@@ -40,7 +40,7 @@ const MyPosts = ({posts}) => {
             </div>
           </div>
           <div className='flex px-2 gap-4 w-full'>
-            <button onClick={() => handle_likes(post)}><FavoriteBorderIcon /></button>
+            {/* <button onClick={() => handle_likes(post)}><FavoriteBorderIcon /></button> */}
             <div className='ml-auto text-xs font-thin italic'>~{post.createdAt.toString().slice(0, 15)}</div>
           </div> 
         </div>        
