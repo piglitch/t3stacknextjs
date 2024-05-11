@@ -17,10 +17,11 @@ const page = async() => {
 
   for (let index = 0; index < allLikedPosts.length; index++) {
     const postid = allLikedPosts[index]?.postId;
-    allposts = await db.query.posts.findMany({
+    const this_post = await db.query.posts.findFirst({
       orderBy: (model, {desc}) => desc(model?.createdAt),
       where: (allposts, {eq}) => (allposts?.id ? eq(allposts?.id, postid) : undefined)
     });
+    allposts.push(this_post)
     console.log(allposts);
   }
 
