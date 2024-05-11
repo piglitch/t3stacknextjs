@@ -29,22 +29,28 @@ export async function likePost(post: Post) {
   const session = await auth()
   const userId = session?.user?.id ?? '';
   if (!session?.user?.id) {
-    throw new Error("Unauthorized");
+    return 'unauthorized';
   }
   const newPost = {
     id: uuidv4(),
     postId: post.id,   
-    userId: userId,
+    userId: post.userId,
   };
   await db.insert(likes).values(newPost);
+  await db.update(posts).set({
+    numberoflikes: post.numberoflikes + 1
+  }).where(eq(posts.id, post.id))
 }
 
 export async function unlikePost(post: Post) {
   const session = await auth()
   if (!session?.user?.id) {
-    throw new Error("Unauthorized");
-  }
+    return "Unauthorized";
+  }  
   await db.delete(likes).where(eq(likes.postId, post.id));
+  await db.update(posts).set({
+    numberoflikes: Math.max(post.numberoflikes - 1, 0)
+  }).where(eq(posts.id, post.id))
 }
 
 export async function deletePostFromUser(post: Post) {

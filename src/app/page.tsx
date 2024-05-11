@@ -4,6 +4,7 @@
 import { db } from "~/server/db";
 import HomePage from "./_components/homePage";
 import { auth } from "~/auth";
+import { eq } from "drizzle-orm";
 
 
 export const dynamic = "force-dynamic";
@@ -22,7 +23,11 @@ export default async function Home() {
   return (
     <main>
       <div className="w-80 md:w-2/3 mx-auto">
-        <HomePage allposts={allposts} users={users} allLikedPosts={allLikedPosts}/>
+        <HomePage 
+          allposts={allposts} 
+          users={users} 
+          allLikedPosts={allLikedPosts} 
+        />
       </div>
     </main>
   );

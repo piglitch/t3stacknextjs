@@ -39,6 +39,7 @@ export interface Post {
   htmlContent: string;
   createdAt: Date;
   updatedAt?: Date | null;
+  numberoflikes: number;
 }
 
 export interface Like {

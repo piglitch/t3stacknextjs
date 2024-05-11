@@ -86,6 +86,7 @@ export const posts = pgTable(
       .references(() => users.id, { onDelete: "cascade" }),
     title: text("title").notNull(),
     htmlContent: text("htmlContent").notNull(),
+    numberoflikes: integer('numberoflikes').default(0).notNull(),
     createdAt: timestamp("created_at")
       .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),

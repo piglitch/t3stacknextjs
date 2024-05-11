@@ -8,8 +8,7 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import ReactHtmlParse from 'html-react-parser';
 
 const page = async() => {
-  let allposts = [];;
-  let a = 0;
+  let allposts = [];
   const session = auth()
   const user = session?.user;
   const allLikedPosts = await db.query.likes.findMany({
@@ -22,8 +21,7 @@ const page = async() => {
       orderBy: (model, {desc}) => desc(model?.createdAt),
       where: (allposts, {eq}) => (allposts?.id ? eq(allposts?.id, postid) : undefined)
     });
-    a = a + 1
-    console.log('xcxfadfd', allposts);
+    console.log(allposts);
   }
 
 
