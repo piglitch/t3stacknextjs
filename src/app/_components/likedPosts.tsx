@@ -1,23 +1,16 @@
-/* eslint-disable @next/next/no-img-element */
 'use client'
+
+import React from 'react'
 
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import ReactHtmlParse from 'html-react-parser';
-import { v4 as uuidv4 } from 'uuid';
-import { likePost, unlikePost } from '../lib/actions';
-import { type User, type Post, type Like } from '~/types';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import { likePost, unlikePost } from '../lib/actions';
+import { v4 as uuidv4 } from 'uuid';
 import Link from 'next/link';
-
-
-interface Props {
-  allposts: Post[];
-  users: User[];
-  allLikedPosts?: Like[];
-}
-
-const HomePage: React.FC<Props> = ({allposts, users, allLikedPosts}) => {
+const LikedPosts = ({allposts, users, allLikedPosts}) => {
+  // Like logic
   const session = useSession();  
   const router = useRouter()
   const handle_likes = async(post: Post) => {
@@ -57,7 +50,7 @@ const HomePage: React.FC<Props> = ({allposts, users, allLikedPosts}) => {
                   <div>{post.title}</div>
                   <div className="text-sm font-bold text-white"> 
                     <span className="text-yellow-200"> {users.map(
-                    curr_user => curr_user.id === post.userId && session.status === 'authenticated' ? 
+                    curr_user => curr_user.id === post.userId? 
                     <Link key={uuidv4()} href={`/profile/${encodeURIComponent(curr_user.id)}`}>
                      <img key={uuidv4()} 
                       onClick={() => router.push(`${curr_user.id}`)}
@@ -67,27 +60,24 @@ const HomePage: React.FC<Props> = ({allposts, users, allLikedPosts}) => {
                     </Link>
                     : ""
                     )}</span>
-                  </div>  
+                  </div> 
                 </h1>
                 <div className="body-post">{ReactHtmlParse(post.htmlContent)}</div>
               </div>              
             </div>
-            {/* { session.status === 'authenticated' ?  */}
-              <div className='flex px-2 gap-4 w-full'>
+            <div className='flex px-2 gap-4 w-full'>
                 <div id={`like_div${post.id}`}>{post.numberoflikes > 0 ? post.numberoflikes : ''}</div>
                 <button onClick={() => handle_likes(post)}>
                   <FavoriteBorderIcon id={post?.id} key={uuidv4()}
                   style={{ color: allLikedPosts?.some(x => x.postId === post?.id) ? 'red' : 'white' }} />
                 </button>
               <div className='ml-auto text-xs font-thin italic'>~{post.createdAt.toString().slice(0, 15)}</div>
-            </div> 
-            {/* : ''
-            } */}
+            </div>  
           </div>            
         ))
-      }      
+      }        
     </div>
   )
 }
 
-export default HomePage
+export default LikedPosts

@@ -6,11 +6,13 @@ import { v4 as uuidv4 } from 'uuid';
 import useState from 'react';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import ReactHtmlParse from 'html-react-parser';
+import LikedPosts from '../_components/likedPosts';
 
 const page = async() => {
   let allposts = [];
   const session = auth()
   const user = session?.user;
+  const users = await db.query.users.findMany();
   const allLikedPosts = await db.query.likes.findMany({
     where: (allLikedPosts, {eq}) => (user?.id ? eq(allLikedPosts?.userId, user.id) : undefined)
   });
@@ -27,28 +29,8 @@ const page = async() => {
 
 
   return (
-    <div>
-      {
-        allposts.map((post) => (
-          <div key={uuidv4()} className='mb-10'>
-            <div className="each-post mb-1">
-              <div className="w-full">
-                <h1 className="heading-post">
-                  <div>{post.title}</div>
-                </h1>
-                <div className="body-post">{ReactHtmlParse(post.htmlContent)}</div>
-              </div>              
-            </div>
-            <div className='flex px-2 gap-4 w-full'>
-              {/* <button onClick={() => handle_likes(post)}>
-                <FavoriteBorderIcon id={post?.id} key={uuidv4()}
-                className={allLikedPosts?.some(x => x.postId === post?.id) ? 'text-red-600' : "text-white"} />
-              </button> */}
-              <div className='ml-auto text-xs font-thin italic'>~{post.createdAt.toString().slice(0, 15)}</div>
-            </div> 
-          </div>            
-        ))
-      }      
+    <div className="w-80 md:w-2/3 mx-auto">
+      <LikedPosts allposts={allposts} users={users} allLikedPosts={allLikedPosts} />
     </div>
   )
 }

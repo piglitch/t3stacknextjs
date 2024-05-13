@@ -25,7 +25,7 @@ const MyPosts = ({posts}) => {
     router.refresh()
   }
   return (
-  <div className='w-96 lg:w-full mx-auto'>
+  <div>
     {
       posts.length > 0 ? posts.map(post => (
         <div key={uuidv4()} className='mb-10'>
