@@ -8,10 +8,11 @@ export default function UserProfile({users, allposts}) {
   const userInProfile = null; 
   const params = useParams<{ id: string; name: string }>()
   console.log("params: ", params)
-  const user = users.map(x => x.id == params.id ? x : 'Not found')
+  let user = []
+  users.map(x => x.id == params.id ? user.push(x) : 'Not found')
   const userPosts = [];
-  allposts.map(x => x.userId == params.id ? userPosts.push(x) : 'No post found')
-  console.log(user, userPosts.map(x => x.title));
+  allposts.map(x => x.userId == params.id ? userPosts.push(x) : '')
+  console.log('user: ', user);
 
 
   return(
