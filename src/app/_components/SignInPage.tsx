@@ -16,8 +16,7 @@ function SignInPage() {
   }
 
   const handleSignOut = async () => {
-    router.push('/');
-    await signOut();  
+    await signOut({callbackUrl: '/'});  
   }
   if (status === 'authenticated') {
     return (
