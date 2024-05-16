@@ -14,7 +14,7 @@ const page = async() => {
   const user = session?.user;
   const users = await db.query.users.findMany();
   const allLikedPosts = await db.query.likes.findMany({
-    where: (allLikedPosts, {eq}) => (user?.id ? eq(allLikedPosts?.userId, user.id) : undefined)
+    where: (likes, { eq }) => (user?.id ? eq(likes.userId, user.id) : undefined)
   });
 
   for (let index = 0; index < allLikedPosts.length; index++) {
