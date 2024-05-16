@@ -24,9 +24,9 @@ const page = async() => {
       where: (allposts, {eq}) => (allposts?.id ? eq(allposts?.id, postid) : undefined)
     });
     allposts.push(this_post)
-    console.log(allposts);
+    console.log('allposts: ', allposts);
+    console.log('alllikes: ', allLikedPosts);
   }
-
 
   return (
     <div className="w-80 md:w-2/3 mx-auto">

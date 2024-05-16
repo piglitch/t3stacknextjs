@@ -77,7 +77,7 @@ const HomePage: React.FC<Props> = ({allposts, users, allLikedPosts}) => {
                 <div id={`like_div${post.id}`}>{post.numberoflikes > 0 ? post.numberoflikes : ''}</div>
                 <button onClick={() => handle_likes(post)}>
                   <FavoriteBorderIcon id={post?.id} key={uuidv4()}
-                  style={{ color: allLikedPosts?.some(x => x.postId === post?.id) ? 'red' : 'white' }} />
+                  style={{ color: allLikedPosts?.some(x => x.postId === post?.id) && session?.status === 'authenticated' ? 'red' : 'white' }} />
                 </button>
               <div className='ml-auto text-xs font-thin italic'>~{post.createdAt.toString().slice(0, 15)}</div>
             </div> 

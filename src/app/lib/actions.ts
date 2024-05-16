@@ -34,7 +34,7 @@ export async function likePost(post: Post) {
   const newPost = {
     id: uuidv4(),
     postId: post.id,   
-    userId: post.userId,
+    userId: userId,
   };
   await db.insert(likes).values(newPost);
   await db.update(posts).set({

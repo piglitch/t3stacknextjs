@@ -9,10 +9,10 @@ export default function UserProfile({users, allposts}) {
   const params = useParams<{ id: string; name: string }>()
   console.log("params: ", params)
   const user = users.map(x => x.id == params.id ? x : 'Not found')
-  const userPosts = allposts.map(x => x.userId == params.id ? x : 'No post found')
-  console.log(user);
+  const userPosts = [];
+  allposts.map(x => x.userId == params.id ? userPosts.push(x) : 'No post found')
+  console.log(user, userPosts.map(x => x.title));
 
-  // Like logic 
 
   return(
     <div className='p-4'>
@@ -21,6 +21,7 @@ export default function UserProfile({users, allposts}) {
 
       <div className='p-4'>
         {
+          userPosts.length > 0 ?
           userPosts.map(post => 
             <div key={uuidv4()} className='mb-10'>
             <div className='each-post mb-2'>
@@ -36,7 +37,8 @@ export default function UserProfile({users, allposts}) {
               {/* <button onClick={() => handle_likes(post)}><FavoriteBorderIcon /></button> */}
               <div className='ml-auto text-xs font-thin italic'>~{post.createdAt.toString().slice(0, 15)}</div>
             </div> 
-          </div>                  ) 
+          </div>                  
+          ) : "User has no posts."
         }
       </div>
     </div>
