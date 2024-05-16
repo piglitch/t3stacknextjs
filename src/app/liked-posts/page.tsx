@@ -10,18 +10,18 @@ import LikedPosts from '../_components/likedPosts';
 
 const page = async() => {
   let allposts = [];
-  const session = auth()
+  const session = await auth()
   const user = session?.user;
   const users = await db.query.users.findMany();
   const allLikedPosts = await db.query.likes.findMany({
-    where: (likes, { eq }) => (user?.id ? eq(likes.userId, user.id) : undefined)
+    where: (likes, {eq}) => eq(likes?.userId, user?.id)
   });
 
   for (let index = 0; index < allLikedPosts.length; index++) {
     const postid = allLikedPosts[index]?.postId;
     const this_post = await db.query.posts.findFirst({
       orderBy: (model, {desc}) => desc(model?.createdAt),
-      where: (allposts, {eq}) => (allposts?.id ? eq(allposts?.id, postid) : undefined)
+      where: (allposts, {eq}) => eq(allposts?.id, postid)
     });
     allposts.push(this_post)
     console.log('allposts: ', allposts);
